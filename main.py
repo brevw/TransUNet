@@ -26,9 +26,17 @@ def main():
 
     if args.train:
         from scripts.preprocess import load_test_names_and_sizes
+        from scripts.dataloaders import TrainDataset, TestDataset
+        from torch.utils.data import DataLoader, Dataset
+        BATCH_SIZE = 8
+
         names, original_sizes = load_test_names_and_sizes()
-        print(len(names))
-        print(len(original_sizes))
+        train_dataset = TrainDataset()
+        train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+        test_dataset = TestDataset()
+        test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
+
+
 
 
 if __name__ == "__main__":

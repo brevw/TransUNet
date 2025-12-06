@@ -20,7 +20,9 @@ augment_transform = transforms.RandomAffine(
 class TrainDataset(Dataset):
     """
     Dataset class for training data.
-    Output will have the following shape: (B, 1, H, W)
+    Output will have the following shape:
+        - frame -> (B, 1, H, W)
+        - mask  -> (B, 1, H, W)
     """
     def __init__(self):
         self.size = get_train_dataset_size()
@@ -45,6 +47,12 @@ class TrainDataset(Dataset):
         return img_frame, img_mask
 
 class TestDataset(Dataset):
+    """
+    Dataset class for testing data.
+    Output will have the following shape:
+        - frame -> (B, 1, H, W)
+    """
+
     def __init__(self):
         self.size = len(load_test_names_and_sizes()[0])
 

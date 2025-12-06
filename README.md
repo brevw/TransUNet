@@ -27,7 +27,7 @@ options:
   --train       Run training step.
 ```
 ### Download and Preprocessing Data
-Download dataset from the following link: [dataset_train_test](https://limewire.com/d/7bz6K#SIIxv4jdvx)
+Download dataset from the following link: [dataset_train_test](https://drive.google.com/drive/folders/1DZBMwiqPEIhZa8o5H_A3l7V4IpV5HpYK?usp=sharing)
 
 Place the files `test.pkl` and `train.pkl` in the `data_compressed/` folder
 

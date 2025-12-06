@@ -3,6 +3,14 @@ import pickle
 import numpy as np
 import os
 
+# Models
+MODEL_UNET = "unet"
+MODEL_TRANS_UNET = "trans-unet"
+MODEL_UNET_PATH = "models/unet_model.pth"
+MODEL_TRANS_UNET_PATH = "models/trans_unet_model.pth"
+
+
+#Paths Dataset
 COMPRESSED_TRAIN_DATA = "data_compressed/train.pkl"
 COMPRESSED_TEST_DATA = "data_compressed/test.pkl"
 

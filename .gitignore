@@ -6,3 +6,4 @@ data_compressed/*
 !data_compressed/.gitkeep
 models/unet_model.pth
 models/trans_unet_model.pth
+results/*

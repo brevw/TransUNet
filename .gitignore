@@ -1,3 +1,6 @@
 **/__pycache__
 **/.DS_Store
-
+data/*
+!data/.gitkeep
+data_compressed/*
+!data_compressed/.gitkeep

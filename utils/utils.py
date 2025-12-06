@@ -1,6 +1,7 @@
 import gzip
 import pickle
 import numpy as np
+import os
 
 COMPRESSED_TRAIN_DATA = "data_compressed/train.pkl"
 COMPRESSED_TEST_DATA = "data_compressed/test.pkl"
@@ -16,6 +17,14 @@ def load_zipped_pickle(filename: str):
 def save_zipped_pickle(obj, filename: str):
     with gzip.open(filename, 'wb') as f:
         pickle.dump(obj, f, 2)
+
+def get_train_dataset_size():
+    if os.path.exists(DECOMPRESSED_TRAIN_PATH):
+        names = [name for name in os.listdir(DECOMPRESSED_TRAIN_PATH) if os.path.isfile(os.path.join(DECOMPRESSED_TRAIN_PATH, name)) and name.endswith('.png')]
+        return len(names) // 2
+    else:
+        raise FileNotFoundError(f"Directory {DECOMPRESSED_TRAIN_PATH} does not exist.")
+
 
 def get_sequences(arr):
     first_indices, last_indices, lengths = [], [], []

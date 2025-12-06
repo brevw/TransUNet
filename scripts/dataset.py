@@ -37,8 +37,10 @@ class TrainDataset(Dataset):
         img_mask = torch.from_numpy(np.array(img_mask)).unsqueeze(0)
 
         # Augmentation by adding random translation and rotation
-        img_frame = augment_transform(img_frame)
-        img_mask = augment_transform(img_mask)
+        stacked = torch.stack((img_frame, img_mask), dim=0)
+        stacked_augmented = augment_transform(stacked)
+        img_frame = stacked_augmented[0]
+        img_mask = stacked_augmented[1]
 
         # Normalize images so that values are between 0 and 1
         img_frame = img_frame.float() / 255.0

@@ -62,32 +62,37 @@ class TestDataset(Dataset):
 
 # testing the TrainDataset [code snippet]
 if __name__ == "__main__":
-    TEST_TRAIN_DATASET = False
+    from torchvision import utils as vutil
+    TEST_TRAIN_DATASET = True
 
     if TEST_TRAIN_DATASET:
         train_dataset = TrainDataset()
-        train_loader = DataLoader(train_dataset, batch_size=4, shuffle=False)
+        train_loader = DataLoader(train_dataset, batch_size=32, shuffle=False)
         img_frames, img_masks = next(iter(train_loader))
         print(f"Image frames batch shape: {img_frames.shape}")
         print(f"Image masks batch shape: {img_masks.shape}")
         from matplotlib import pyplot as plt
-        #plot both images and masks at index 0
-        plt.subplot(1, 2, 1)
-        plt.imshow(img_frames[0].squeeze(), cmap='gray')
-        plt.title("Image Frame")
-        plt.subplot(1, 2, 2)
-        plt.imshow(img_masks[0].squeeze(), cmap='gray')
-        plt.title("Image Mask")
+        #plot both images and masks
+        plt.figure(figsize=(10, 7)) # Increased size for visibility
+        plt.axis('off')
+        plt.title("Train Image Frames and Masks")
+
+        combined_batch = torch.stack([img_frames, img_masks], dim=1).flatten(0, 1)
+        grid_img = vutil.make_grid(combined_batch, nrow=8, padding=2, normalize=True)
+        plt.imshow(grid_img.permute(1, 2, 0))
         plt.show()
     else:
         test_dataset = TestDataset()
-        test_loader = DataLoader(test_dataset, batch_size=4, shuffle=False)
+        test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
         img_frames = next(iter(test_loader))
         print(f"Image frames batch shape: {img_frames.shape}")
         from matplotlib import pyplot as plt
         #plot image at index 0
-        plt.imshow(img_frames[0].squeeze(), cmap='gray')
-        plt.title("Test Image Frame")
+        plt.figure(figsize=(10, 7))
+        plt.axis('off')
+        plt.title("Test Image Frames")
+        grid_img = vutil.make_grid(img_frames, nrow=8, padding=2, normalize=True)
+        plt.imshow(grid_img.permute(1, 2, 0))
         plt.show()
 
 

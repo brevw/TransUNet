@@ -1,8 +1,19 @@
 import argparse
+import torch
 
 TRAINED_MODEL_PATH = "trained_model.pth"
 
 def main():
+
+    # use accelerator if available
+    DEVICE = None
+    if torch.cuda.is_available():
+        DEVICE = torch.device("cuda")
+    elif torch.backends.mps.is_available():
+        DEVICE = torch.device("mps")
+    else:
+        DEVICE = torch.device("cpu")
+
     parser = argparse.ArgumentParser(description="CLI tool.")
     parser.add_argument("--preprocess", action="store_true", help="Run preprocessing step.", default=False)
     parser.add_argument("--train", action="store_true", help="Run training step.", default=False)

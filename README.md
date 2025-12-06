@@ -1,4 +1,4 @@
-# TransUNet
+# Trans-UNet
 Implementation of the latest state of the art segmentation model (TransUNet)
 
 # Data
@@ -9,5 +9,30 @@ To assess performance, we will set our goal to the segmentation of the MV (mistr
   <img src="./data/train/0_mask.png" alt="mask 0" style="width: 48%; max-width: 400px; border: 1px solid #ccc;">
 </div>
 
+# Results
+TBD
 
 # Running
+
+### Usage
+```shell
+$ python main.py --help                                                                               ─╯
+usage: main.py [-h] [--preprocess] [--train]
+
+CLI tool.
+
+options:
+  -h, --help    show this help message and exit
+  --preprocess  Run preprocessing step.
+  --train       Run training step.
+```
+### Download and Preprocessing Data
+Download dataset from the following link: [dataset_train_test](https://limewire.com/d/7bz6K#SIIxv4jdvx)
+
+Place the files `test.pkl` and `train.pkl` in the `data_compressed/` folder
+
+Then run the following command:
+
+```shell
+$ python main.py --preprocess
+```

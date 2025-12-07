@@ -17,6 +17,8 @@ COMPRESSED_TEST_DATA = "data_compressed/test.pkl"
 DECOMPRESSED_TRAIN_PATH = "data/train/"
 DECOMPRESSED_TEST_PATH = "data/test/"
 
+RESULTS_PATH = "results/"
+
 def load_zipped_pickle(filename: str):
     with gzip.open(filename, 'rb') as f:
         loaded_object = pickle.load(f)

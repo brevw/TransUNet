@@ -57,20 +57,62 @@ class TransformerBlock(torch.nn.Module):
 
 
 class ViT(torch.nn.Module):
-    def __init__(self, dim_in: int, depth: int, heads: int, dim_head: int, mlp_dim: int, dropout: float = 0.1):
+    def __init__(
+        self,
+        image_size : int   = 512,
+        patch_size : int   = 16,
+        dim_in     : int   = 768,
+        depth      : int   = 12,
+        heads      : int   = 8,
+        mlp_dim    : int   = 2048,
+        channels   : int   = 3,
+        dim_head   : int   = 64,
+        dropout    : float = 0.1
+    ):
         super(ViT, self).__init__()
+        assert image_size % patch_size == 0, "Image dimensions must be divisible by the patch size."
+        num_patches = (image_size // patch_size) ** 2
+
+        # patch embedding
+        self.patch_to_embedding = nn.Sequential(
+            nn.Conv2d(channels, dim_in, kernel_size=patch_size, stride=patch_size),
+            nn.Flatten(2) # shape (B, dim_in, N)
+        )
+
+        self.cls_token = nn.Parameter(torch.randn(1, 1, dim_in))
+        self.positional_embedding = nn.Parameter(torch.randn(1, num_patches + 1, dim_in))
+        self.dropout = nn.Dropout(p=dropout)
+
+
         self.layers = nn.ModuleList([])
         for _ in range(depth):
             self.layers.append(
                 TransformerBlock(dim_in, heads, dim_head, mlp_dim, dropout)
             )
 
+        self.ln_final = nn.LayerNorm(dim_in)
+
     def forward(self, x):
+        # image shape: (B, C, H, W)
+
+        # patch embedding
+        x = self.patch_to_embedding(x) # shape (B, dim_in, N)
+        x = x.permute(0, 2, 1) # shape (B, N, dim_in)
+        B, N, _ = x.shape
+
+        # add cls token
+        cls_tokens = self.cls_token.expand(B, -1, -1) # shape (B, 1, dim_in)
+        x = torch.cat((cls_tokens, x), dim=1) # shape (B, N + 1, dim_in)
+
+        # add positional embedding
+        x = x + self.positional_embedding[:, :N + 1, :] # shape (B, N + 1, dim_in)
+        x = self.dropout(x) # shape (B, N + 1, dim_in)
+
+        # transformer blocks
         for layer in self.layers:
             x = layer(x) # shape (B, N, dim_in)
+        x = self.ln_final(x) # shape (B, N, dim_in)
         return x
-
-
 
 
 if __name__ == "__main__":
@@ -79,10 +121,21 @@ if __name__ == "__main__":
     BATCH_SIZE = 32
 
     # test ViT
-    input_tensor = torch.randn(BATCH_SIZE, 16, DIM_IN)  # (B, N, C)
+    input_tensor = torch.randn((BATCH_SIZE, 1, 512, 512))
     print(f"Input tensor shape: {input_tensor.shape}")
-    vit = ViT(dim_in=DIM_IN, depth=6, heads=8, dim_head=64, mlp_dim=128, dropout=0.1)
+    vit = ViT(
+        image_size=512,
+        patch_size=16,
+        dim_in=DIM_IN,
+        depth=6,
+        heads=8,
+        mlp_dim=256,
+        channels=1,
+        dim_head=8,
+        dropout=0.1
+    )
+
     output_tensor = vit(input_tensor)
-    print(f"ViT output shape: {output_tensor.shape}")  # Expected: (B, 16, DIM_IN)
+    print(f"ViT output shape: {output_tensor.shape}")  # Expected: (B, N, DIM_IN)
     print(f"ViT model size: {get_model_size_mb(vit):.2f} MB")
 

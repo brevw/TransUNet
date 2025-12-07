@@ -1,3 +1,4 @@
+Implementation of models: [UNet](./models/UNet.py), [ResNet50](./models/ResNet_Backbone.py), [ViT](./models/ViT.py), [Trans-UNet](./models/TransUNet.py)
 # Trans-UNet
 Implementation of the latest state of the art segmentation model (TransUNet)
 

@@ -10,7 +10,10 @@ To assess performance, we will set our goal to the segmentation of the MV (mistr
 </div>
 
 # Results
-TBD
+```shell
+python main.py --inference --video_mode --limit_output 1
+```
+![output.gif](./results/output.gif)
 
 # Running
 

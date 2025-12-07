@@ -62,3 +62,10 @@ class UNet(torch.nn.Module):
         x = self.up_conv1(torch.cat([x, x0], dim=1))
         x = self.decrease(x)
         return x
+
+
+
+if __name__ == "__main__":
+    from utils.utils import get_model_size_mb
+    model = UNet(in_channels=1, out_channels=1)
+    print(f"UNet Model size: {get_model_size_mb(model):.3f} MB")

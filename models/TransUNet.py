@@ -10,3 +10,7 @@ class TransUNet(torch.nn.Module):
         ...
 
 
+if __name__ == "__main__":
+    from utils.utils import get_model_size_mb
+    model = TransUNet(in_channels=1, out_channels=1)
+    print(f"Trans-UNet Model size: {get_model_size_mb(model):.3f} MB")

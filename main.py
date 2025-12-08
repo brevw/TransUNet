@@ -112,8 +112,8 @@ def main():
                 model.train()
                 epoch_loss = 0.0
                 for imgs, masks in tqdm(train_loader):
-                    imgs = imgs.to(DEVICE)
-                    masks = masks.to(DEVICE)
+                    imgs = imgs.to(DEVICE).float()
+                    masks = masks.to(DEVICE).float()
 
                     outputs = model(imgs)
                     loss = criterion(outputs, masks)
@@ -121,6 +121,7 @@ def main():
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
+                    print("finished step")
 
                     epoch_loss += loss.item()
                 avg_loss = epoch_loss / len(train_loader)

@@ -65,7 +65,7 @@ class ViT(torch.nn.Module):
         depth      : int   = 12,
         heads      : int   = 8,
         mlp_dim    : int   = 2048,
-        channels   : int   = 3,
+        channels   : int   = 1,
         dim_head   : int   = 64,
         dropout    : float = 0.1
     ):
